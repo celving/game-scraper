@@ -11,6 +11,8 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
+
+
 var PORT = 3000;
 
 // Initialize Express
@@ -70,8 +72,7 @@ app.get("/scrape", function(req, res) {
         });
     });
 
-    // Send a message to the client
-    res.send("Scrape Complete");
+    res.redirect("back");
   });
 });
 
@@ -124,6 +125,13 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
+app.get("/clear", function(req, res) {
+  db.Article.deleteMany({}, function (err) {
+    if (err) return handleError(err);
+  });
+  res.redirect("back");
+})
 
 // Start the server
 app.listen(PORT, function() {
